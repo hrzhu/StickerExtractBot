@@ -1,3 +1,4 @@
+from telegram import ChatAction
 from telegram.ext import Updater, MessageHandler, Filters
 from telegram.ext.dispatcher import run_async
 
@@ -23,6 +24,7 @@ def sticker(bot, update):
     img.save(compressed_image, 'PNG')
     compressed_image.seek(0)
 
+    update.message.chat.send_action(ChatAction.UPLOAD_DOCUMENT)
     bot.send_document(chat_id=update.message.chat_id,
                       document=compressed_image,
                       filename=update.message.sticker.file_id + '.png',
@@ -32,6 +34,7 @@ def sticker(bot, update):
 
     compressed_image.seek(0)
 
+    update.message.chat.send_action(ChatAction.UPLOAD_PHOTO)
     bot.send_photo(chat_id=update.message.chat_id,
                    photo=compressed_image,
                    reply_to_message_id=update.message.message_id,
