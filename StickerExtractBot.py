@@ -21,7 +21,7 @@ def sticker(bot, update):
     res = requests.get(bot.get_file(file_id=update.message.sticker.file_id).file_path)
     img = Image.open(BytesIO(res.content))
     compressed_image = BytesIO()
-    img.save(compressed_image, 'PNG')
+    img.convert('RGBA').save(compressed_image, 'PNG')
     compressed_image.seek(0)
 
     update.message.chat.send_action(ChatAction.UPLOAD_DOCUMENT)
@@ -45,3 +45,4 @@ sticker_handler = MessageHandler(Filters.sticker, sticker)
 dispatcher.add_handler(sticker_handler)
 
 updater.start_polling()
+updater.idle()
